@@ -1,5 +1,5 @@
 const os=require('os');
-const RX=require('rxjs/RX');
+const {Observable}=require('rxjs');
 
 const promiseMemCheck=new Promise((resolve,reject)=>{
     const memSize=os.totalmem();
@@ -21,16 +21,16 @@ function checkSystem()
    Promise.all([promiseMemCheck,promiseCpuCheck]).then((values)=>console.log("System successfully checked")).catch(
        (errors)=>console.error(errors));
 }
-function checkSystemNestedPromises()
-{
-    console.log("Checking system ...");
-    promiseMemCheck.then(promiseCpuCheck).then((values)=>console.log("System successfully checked")).catch(
-       (errors)=>console.error(errors));
-}
+// function checkSystemNestedPromises()
+// {
+//     console.log("Checking system ...");
+//     promiseMemCheck.then(promiseCpuCheck).then((values)=>console.log("System successfully checked")).catch(
+//        (errors)=>console.error(errors));
+// }
 function checkSystemObservable()
 {
 console.log("Checking system ...");
-RX.Observable.create(observer=>{
+Observable.create(observer=>{
     const memSize=os.totalmem();
     if(memSize<4*1024*1024*1024)
     {
@@ -53,5 +53,5 @@ RX.Observable.create(observer=>{
 )
 }
 checkSystem();
-checkSystemNestedPromises();
+//checkSystemNestedPromises();
 checkSystemObservable();
